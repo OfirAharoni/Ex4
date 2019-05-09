@@ -4,6 +4,9 @@ import android.os.AsyncTask;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import static com.example.ofir.ex1_updated_version.MainActivity.recyclerViewAdapter;
 
 /**
@@ -33,13 +36,21 @@ public class DataBaseLoad extends AsyncTask<Void, Void, Void> {
                         msg_from_db.add(msg);
                     }
 
+                    // sort messages by timestamp
+                    Comparator<Message> compareByTs= new Comparator<Message>() {
+                        @Override
+                        public int compare(Message o1, Message o2) {
+                            return o1.getTimestamp().compareTo(o2.getTimestamp());
+                        }
+                    };
+                    Collections.sort(msg_from_db, compareByTs);
+
                     // update messages list and update recycler view adapter
                     MainActivity.messages = msg_from_db;
                     recyclerViewAdapter.notifyDataSetChanged();
                 }
             }
         });
-
         return null;
     }
 }

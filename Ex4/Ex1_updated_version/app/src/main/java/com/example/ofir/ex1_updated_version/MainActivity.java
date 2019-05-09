@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 
@@ -46,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     // Create unique ID  and Timestamp for the message
                     String id = Message.getRandomNumberString();
-                    String timestamp = new java.util.Date().toString();
+                    Timestamp ts = new Timestamp(System.currentTimeMillis());
+                    Long timestamp = ts.getTime();
                     // Create Message object
-                    Message message = new Message(content, id, timestamp);
+                    Message message = new Message(content, id, timestamp.toString());
                     // add the message to the messages list and update recycle view
                     messages.add(message);
                     recyclerViewAdapter.notifyDataSetChanged();

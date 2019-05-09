@@ -7,16 +7,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 /**
  * This class is responsible to delete a given message from FireBase DB.
  */
-public class DataBaseDelete extends AsyncTask<String, String, String> {
+public class DataBaseDelete extends AsyncTask<String, String, Void> {
 
     private final String CONTENT_TAG = "content";
     private final String ID_TAG = "id";
     private final String TIMESTAMP_TAG = "timestamp";
     private final String COLLECTION_TAG = "ChatMessages";
-    private final String FINISHED = "Done";
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected Void doInBackground(String... strings) {
         final String content_dl = strings[0];
         final String id_dl = strings[1];
         final String timestamp_dl = strings[2];
@@ -42,6 +41,6 @@ public class DataBaseDelete extends AsyncTask<String, String, String> {
             }
         });
 
-        return FINISHED;
+        return null;
         }
     }

@@ -32,8 +32,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textView.setText(MainActivity.messages.get(position).getContent());
+        holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                // Create fragment in order to present additional info
+                Question_dialog_box question_dialog_box = new Question_dialog_box();
+                Bundle args = new Bundle();
+                args.putInt(MESSAGE_TAG,  holder.getAdapterPosition());
+                question_dialog_box.setArguments(args);
+
+                FragmentManager manager =
+                        ((AppCompatActivity)v.getContext()).getFragmentManager();
+                question_dialog_box.show(manager, DELETE_WARNING);
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -43,28 +60,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
-            TextView textView;
+        TextView textView;
 
-        ViewHolder(View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.custom_tv);
-            textView.setOnLongClickListener(new View.OnLongClickListener() {
 
-                @Override
-                public boolean onLongClick(View v) {
-                    // Create fragment in order to present additional info
-                    Question_dialog_box question_dialog_box = new Question_dialog_box();
-                    Bundle args = new Bundle();
-                    args.putString(MESSAGE_TAG, textView.getText().toString());
-                    question_dialog_box.setArguments(args);
-
-                    FragmentManager manager =
-                            ((AppCompatActivity)v.getContext()).getFragmentManager();
-                    question_dialog_box.show(manager, DELETE_WARNING);
-
-                    return false;
-                }
-            });
         }
     }
 }

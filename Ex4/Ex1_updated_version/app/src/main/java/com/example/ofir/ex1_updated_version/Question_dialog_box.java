@@ -12,7 +12,6 @@ public class Question_dialog_box extends DialogFragment
 {
 
     private final String MSG_TAG = "msg";
-    private final String NA_TAG = "N/A";
 
     @Nullable
     @Override
@@ -24,7 +23,7 @@ public class Question_dialog_box extends DialogFragment
         Button del_btn = view.findViewById(R.id.del_btn);
 
         Bundle args = getArguments();
-        final String selected_msg = args.getString(MSG_TAG, NA_TAG);
+        final int selected_msg = args.getInt(MSG_TAG, -99);
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,19 +36,12 @@ public class Question_dialog_box extends DialogFragment
         del_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(int i=0; i < MainActivity.messages.size(); i++)
-                {
-                    String msg = MainActivity.messages.get(i).getContent();
-                    if (msg.equals(selected_msg))
-                    {
-                        Message message_to_rm = MainActivity.messages.get(i);
-                        DataBaseDelete dataBaseDelete = new DataBaseDelete();
-                        dataBaseDelete.execute(message_to_rm.getContent(), message_to_rm.getId(),
-                                message_to_rm.getTimestamp());
-                        MainActivity.messages.remove(message_to_rm);
-                        break;
-                    }
-                }
+                // Removed the selected message from DB
+                Message message_to_rm = MainActivity.messages.get(selected_msg);
+                DataBaseDelete dataBaseDelete = new DataBaseDelete();
+                dataBaseDelete.execute(message_to_rm.getContent(), message_to_rm.getId(),
+                        message_to_rm.getTimestamp());
+                MainActivity.messages.remove(message_to_rm);
 
                 // update adapter
                 MainActivity.recyclerViewAdapter.notifyDataSetChanged();
